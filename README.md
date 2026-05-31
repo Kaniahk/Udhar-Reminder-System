@@ -1,10 +1,10 @@
-# 🚀 Udhar Reminder System
+Udhar Reminder System
 
 An automated payment reminder system built using **n8n**, **Google Sheets**, and **WhatsApp Cloud API**. The workflow automatically identifies overdue payments from a Google Sheet, sends WhatsApp reminders to customers, and updates the reminder status to avoid duplicate notifications.
 
----
 
-## 📌 Project Overview
+
+Project Overview
 
 Managing udhar (credit) payments manually can be time-consuming and error-prone. This project automates the reminder process by:
 
@@ -14,22 +14,22 @@ Managing udhar (credit) payments manually can be time-consuming and error-prone.
 - Updating the reminder status in the sheet
 - Running automatically on a schedule using n8n
 
----
 
-## ✨ Features
 
-- ✅ Automated workflow using n8n
-- ✅ Google Sheets integration
-- ✅ WhatsApp Cloud API integration
-- ✅ Scheduled reminder execution
-- ✅ Due-date validation
-- ✅ Automatic status updates
-- ✅ Scalable for multiple customers
-- ✅ No manual follow-up required
+Features
 
----
+- Automated workflow using n8n
+- Google Sheets integration
+- WhatsApp Cloud API integration
+- Scheduled reminder execution
+- Due-date validation
+- Automatic status updates
+- Scalable for multiple customers
+- No manual follow-up required
 
-## 🛠️ Tech Stack
+
+
+Tech Stack
 
 | Technology | Purpose |
 |------------|---------|
@@ -40,10 +40,9 @@ Managing udhar (credit) payments manually can be time-consuming and error-prone.
 | JavaScript Expressions | Workflow Logic |
 
 ---
+Workflow Architecture
 
-## 🔄 Workflow Architecture
 
-```text
 Schedule Trigger
        │
        ▼
@@ -60,26 +59,16 @@ Send WhatsApp Reminder
        │
        ▼
 Update Status in Sheet
-```
 
----
+Project Structure
 
-## 📂 Project Structure
-
-```text
 Udhar-Reminder-System/
 │
 ├── README.md
 ├── workflow.json
-├── sample_sheet.csv
-└── screenshots/
-    ├── workflow.png
-    └── whatsapp-message.png
-```
-
----
-
-## 📊 Sample Data
+└── screenshots
+   
+Sample Data
 
 | ID | Name | Phone Number | Amount | Due Date | Status |
 |----|------|--------------|---------|----------|---------|
@@ -89,7 +78,6 @@ Udhar-Reminder-System/
 
 ## 💬 Sample Reminder Message
 
-```text
 Hello Rahul,
 
 This is a reminder that your payment of ₹500 is overdue.
@@ -99,60 +87,36 @@ Due Date: 01-May-2026
 Please make the payment at your earliest convenience.
 
 Thank you.
-```
 
----
 
-## ⚙️ Setup Instructions
+Setup Instructions
 
-### 1. Import Workflow
+1. Import Workflow
 
 - Open n8n
 - Click **Import Workflow**
 - Upload `workflow.json`
 
-### 2. Configure Google Sheets
+2. Configure Google Sheets
 
 - Create Google Sheets credentials
 - Connect your sheet
 - Update the Sheet ID if required
 
-### 3. Configure WhatsApp Cloud API
+3. Configure WhatsApp Cloud API
 
 - Create a Meta Developer App
 - Enable WhatsApp Cloud API
 - Generate an Access Token
 - Configure credentials in n8n
 
-### 4. Activate Workflow
+4. Activate Workflow
 
 - Enable the Schedule Trigger
 - Activate the workflow
-- Test by adding sample records
+- Test by adding sample  
 
----
-
-## 📸 Screenshots
-
-### Workflow
-
-Add workflow screenshot here:
-
-```text
-screenshots/workflow.png
-```
-
-### WhatsApp Reminder
-
-Add WhatsApp message screenshot here:
-
-```text
-screenshots/whatsapp-message.png
-```
-
----
-
-## 🎯 Learning Outcomes
+Learning Outcomes
 
 Through this project, I gained practical experience in:
 
@@ -164,19 +128,17 @@ Through this project, I gained practical experience in:
 - Process Automation
 - Business Workflow Design
 
----
-
-## 🔮 Future Enhancements
+Future Enhancements
 
 - Payment links in reminders
 - Add a google form
 - Dashboard and analytics
 - Reminder frequency customization
-- Customer payment tracking
 
 
 
-### Skills Demonstrated
+
+Skills Demonstrated
 
 - SQL
 - Data Analysis
