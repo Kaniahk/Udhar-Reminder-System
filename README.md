@@ -188,6 +188,3 @@ Through this project, I gained practical experience in:
 
 
 
----
-
-⭐ If you found this project interesting, feel free to star the repository.
