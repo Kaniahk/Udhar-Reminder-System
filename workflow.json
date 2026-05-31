@@ -1,0 +1,406 @@
+{
+  "name": "Udhar Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "40ec2104-497c-4ec2-b3f7-cc00e10ebaf6",
+              "leftValue": "={{$json[\"Due date\"]}}",
+              "rightValue": "",
+              "operator": {
+                "type": "dateTime",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "5ccf963b-5faa-4561-95e3-f0f4a289e737",
+              "leftValue": "={{$json[\"Status\"]}}",
+              "rightValue": "pending",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "1d366f5b-ac97-437e-8d1d-850de2965a4e",
+              "leftValue": "={{ new Date($json[\"Due date\"] || \"2099-01-01\") }}",
+              "rightValue": "={{$now}}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "beforeOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        48,
+        32
+      ],
+      "id": "22481958-d8a3-429a-9568-03a61a6169f3",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v23.0/1158953937297426/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAU1CF0kix0BRgq8JKf0yiQhWru6GcjSJOUZACMsdRGCyQBmkI6Sbc9wBSpMfLbn98HO96rO47BL7ZAZAxVqRmJXbACiG0JIiHuBCccnFO5413YjQRtF60npkcbeaFWKZC2oJEJr5caedyZCVGjZBW0iwuvJ0nwABsbEqzpGKjEG24raaCwiclXe53rtg0M7vRq6CfaJDSKQXoZCqkQiq8UlYZCT7qTevDlZBOuUA1OYyKOmPZCsOlQGGs8FZB8G8fpJraZCSmlAOfb41H5REKsgVdlwdL2q"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $json['Phone number'] }}\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Hello {{ $json['Name'] }}, this is a reminder that ₹{{ $json['Amount'] }} is due.\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        656,
+        48
+      ],
+      "id": "32fe4cb4-dbd8-4f7a-b774-75259804d420",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -384,
+        32
+      ],
+      "id": "847ddc1c-dec6-4eca-8913-61b1433acd30",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc",
+          "mode": "list",
+          "cachedResultName": "u sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -176,
+        32
+      ],
+      "id": "74f5b61d-27bb-45c3-a830-eb981c3a289c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gsKhduoRcJNRHV6C",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        256,
+        32
+      ],
+      "id": "dda07bc6-efd9-4157-b054-43050ca83ba9",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "name": "Replace Me",
+      "typeVersion": 1,
+      "position": [
+        464,
+        240
+      ],
+      "id": "cf69965f-00e9-49ea-bc2c-75a069eb4164",
+      "placeholder": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fb1380e-bf7e-4d30-a3f8-01b184a4287a",
+              "name": "=Hi {{ $json[\"Name\"] }},\n\nReminder: You have an outstanding udhar of ₹{{ $json[\"Amount\"] }}.\n\nDue Date: {{ $json[\"Due date\"] }}\n\nPlease clear the payment.\n\nThank you.",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        32
+      ],
+      "id": "3f45b459-f230-4172-a300-f4c938228b8f",
+      "name": "messages"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc",
+          "mode": "list",
+          "cachedResultName": "UDHAR ENTRY",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1NBXCqooRxnuA9K-S2ZXI3HCQ-6lzZmXdx5zM13ALOXc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "reminder_sent",
+            "ID": "={{$item(0).$node[\"Get row(s) in sheet\"].json[\"ID\"]}}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone number ",
+              "displayName": "Phone number ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Due date",
+              "displayName": "Due date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        864,
+        48
+      ],
+      "id": "65f8b396-8fd6-4825-a71d-2d5971e33519",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gsKhduoRcJNRHV6C",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "messages",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Replace Me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Replace Me": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "messages": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6cafe145-5e26-4bea-91d4-4326add206df",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "278a7e4c30f3de3c21bce997ea86428239dff6f0bf30e6c86ae1ed0a90f59415"
+  },
+  "id": "fHHH32MYuYUOtELD",
+  "tags": []
+}
